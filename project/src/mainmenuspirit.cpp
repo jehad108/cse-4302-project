@@ -1,8 +1,8 @@
 #include "mainmenuspirit.hpp"
-#include <bits/stdc++.h>
-using namespace std;
-SpriteAnimation ::SpriteAnimation(const char *imagePath, int totalFrames, float fps, Vector2 pos)
+
+SpriteAnimation::SpriteAnimation(const char *imagePath, int totalFrames, float fps, Vector2 pos)
 {
+    // Load texture once in the constructor
     spriteSheet = LoadTexture(imagePath);
     frameCount = totalFrames;
     frameTime = 1.0f / fps;
@@ -16,11 +16,14 @@ SpriteAnimation ::SpriteAnimation(const char *imagePath, int totalFrames, float 
     // Define the destination rectangle to stretch the spriteSheet to full screen
     destRect = {0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()};
 }
+
 SpriteAnimation::~SpriteAnimation()
 {
+    // Ensure texture is unloaded when the object is destroyed
     UnloadTexture(spriteSheet);
 }
-void SpriteAnimation ::Update()
+
+void SpriteAnimation::Update()
 {
     elapsedTime += GetFrameTime();
     if (elapsedTime >= frameTime)
@@ -30,26 +33,14 @@ void SpriteAnimation ::Update()
         elapsedTime = 0.0f;
     }
 }
-void SpriteAnimation ::Draw()
+
+void SpriteAnimation::Draw()
 {
+    // Draw using the full-screen destRect
     DrawTexturePro(spriteSheet, sourceRect, destRect, (Vector2){0, 0}, 0.0f, WHITE);
 }
-void SpriteAnimation ::SetFPS(float fps)
+
+void SpriteAnimation::SetFPS(float fps)
 {
     frameTime = 1.0f / fps;
-}
-button::button(const char *p, Vector2 imageposition)
-{
-    texture = LoadTexture(p);
-    position = imageposition;
-}
-
-void button::draw()
-{
-    DrawTextureV(texture, position, WHITE);
-}
-
-button::~button()
-{
-    UnloadTexture(texture);
 }
