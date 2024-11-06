@@ -44,7 +44,7 @@ int main()
     playersprite idleSpriteW("characters/gamecharacters/idle-ne.png", 4, 20.0f, {0, 0});
     playersprite idleSpriteN("characters/gamecharacters/idle-n.png", 4, 20.0f, {0, 0});
     playersprite walkSpriteN("characters/gamecharacters/walk-n.png", 8, 30.0f, {0, 0});
-    playersprite walkSpriteS("characters/gamecharacters/walk-s.png", 8, 30.0f, {0, 0});
+    playersprite walkSpriteS("characters/gamecharacters/walk-s.png", 8, 25.0f, {0, 0});
     playersprite walkSpriteE("characters/gamecharacters/walk.png", 8, 30.0f, {0, 0});
     playersprite walkSpriteW("characters/gamecharacters/walk-ne.png", 8, 30.0f, {0, 0});
 
@@ -133,11 +133,6 @@ int main()
                     walkSpriteN.Update();
                     walkSpriteN.Draw(destrect);
                 }
-                else if (playermovingdown)
-                {
-                    walkSpriteS.Update();
-                    walkSpriteS.Draw(destrect);
-                }
                 else if (playermovingleft)
                 {
                     walkSpriteW.Update();
@@ -147,6 +142,11 @@ int main()
                 {
                     walkSpriteE.Update();
                     walkSpriteE.Draw(destrect);
+                }
+                else
+                {
+                    walkSpriteS.Update();
+                    walkSpriteS.Draw(destrect);
                 }
             }
             else
