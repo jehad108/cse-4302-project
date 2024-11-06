@@ -20,15 +20,3 @@ public:
     void Draw();
     void SetFPS(float fps);
 };
-
-class button {
-private:
-    Texture2D texture;
-    Vector2 position;
-
-public:
-    button(const char* p, Vector2 imageposition);
-    ~button();
-
-    void draw();
-};

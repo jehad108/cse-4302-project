@@ -37,15 +37,16 @@ int main()
     ToggleFullscreen();
 
     // Load all textures once
-    idleTextureN = LoadTexture("characters/gamecharacters/idle-n.png");
-    idleTextureS = LoadTexture("characters/gamecharacters/idle-s.png");
-    idleTextureE = LoadTexture("characters/gamecharacters/idle-se.png");
-    idleTextureW = LoadTexture("characters/gamecharacters/idle-ne.png");
 
-    walkTextureN = LoadTexture("characters/gamecharacters/walk-n.png");
-    walkTextureS = LoadTexture("characters/gamecharacters/walk-s.png");
-    walkTextureE = LoadTexture("characters/gamecharacters/walk.png");
-    walkTextureW = LoadTexture("characters/gamecharacters/walk-ne.png");
+    // idleTextureN = LoadTexture("characters/gamecharacters/idle-n.png");
+    playersprite idleSpriteS("characters/gamecharacters/idle-S.png", 4, 20.0f, {0, 0});
+    playersprite idleSpriteE("characters/gamecharacters/idle-se.png", 4, 20.0f, {0, 0});
+    playersprite idleSpriteW("characters/gamecharacters/idle-ne.png", 4, 20.0f, {0, 0});
+    playersprite idleSpriteN("characters/gamecharacters/idle-n.png", 4, 20.0f, {0, 0});
+    playersprite walkSpriteN("characters/gamecharacters/walk-n.png", 8, 30.0f, {0, 0});
+    playersprite walkSpriteS("characters/gamecharacters/walk-s.png", 8, 30.0f, {0, 0});
+    playersprite walkSpriteE("characters/gamecharacters/walk.png", 8, 30.0f, {0, 0});
+    playersprite walkSpriteW("characters/gamecharacters/walk-ne.png", 8, 30.0f, {0, 0});
 
     mapTexture = LoadTexture("characters/map/map_demo.png");
 
@@ -56,7 +57,7 @@ int main()
     sound click("sounds/button.mp3");
     SetTargetFPS(60);
 
-    Texture currentIdleTexture = idleTextureS;
+    playersprite currentIdleSprite = idleSpriteS;
 
     while (!WindowShouldClose() && exit == false)
     {
@@ -89,25 +90,29 @@ int main()
             {
                 playerMoving = playermovingup = true;
                 destrect.y -= playerSpeed;
-                currentIdleTexture = idleTextureN;
+                currentIdleSprite = idleSpriteN;
+                currentIdleSprite.Reset();
             }
             else if (IsKeyDown(KEY_S))
             {
                 playerMoving = playermovingdown = true;
                 destrect.y += playerSpeed;
-                currentIdleTexture = idleTextureS;
+                currentIdleSprite = idleSpriteS;
+                currentIdleSprite.Reset();
             }
             else if (IsKeyDown(KEY_A))
             {
                 playerMoving = playermovingleft = true;
                 destrect.x -= playerSpeed;
-                currentIdleTexture = idleTextureW;
+                currentIdleSprite = idleSpriteW;
+                currentIdleSprite.Reset();
             }
             else if (IsKeyDown(KEY_D))
             {
                 playerMoving = playermovingright = true;
                 destrect.x += playerSpeed;
-                currentIdleTexture = idleTextureE;
+                currentIdleSprite = idleSpriteE;
+                currentIdleSprite.Reset();
             }
 
             if (IsKeyDown(KEY_M))
@@ -123,34 +128,31 @@ int main()
 
             if (playerMoving)
             {
-                framcount++;
-                if (framcount % 3 == 0)
-                {
-                    playerframe++;
-                    if (playerframe > 8)
-                        playerframe = 0;
-                    sourcerect.x = 96 * playerframe;
-                }
                 if (playermovingup)
-                    DrawTexturePro(walkTextureN, sourcerect, destrect, {destrect.width / 2, destrect.height / 2}, 0, WHITE);
+                {
+                    walkSpriteN.Update();
+                    walkSpriteN.Draw(destrect);
+                }
                 else if (playermovingdown)
-                    DrawTexturePro(walkTextureS, sourcerect, destrect, {destrect.width / 2, destrect.height / 2}, 0, WHITE);
+                {
+                    walkSpriteS.Update();
+                    walkSpriteS.Draw(destrect);
+                }
                 else if (playermovingleft)
-                    DrawTexturePro(walkTextureW, sourcerect, destrect, {destrect.width / 2, destrect.height / 2}, 0, WHITE);
+                {
+                    walkSpriteW.Update();
+                    walkSpriteW.Draw(destrect);
+                }
                 else if (playermovingright)
-                    DrawTexturePro(walkTextureE, sourcerect, destrect, {destrect.width / 2, destrect.height / 2}, 0, WHITE);
+                {
+                    walkSpriteE.Update();
+                    walkSpriteE.Draw(destrect);
+                }
             }
             else
             {
-                framcount++;
-                if (framcount % 4 == 0)
-                {
-                    playerframe++;
-                    if (playerframe > 3)
-                        playerframe = 0;
-                    sourcerectidle.x = 96 * playerframe;
-                }
-                DrawTexturePro(currentIdleTexture, sourcerectidle, destrect, {destrect.width / 2, destrect.height / 2}, 0, WHITE);
+                currentIdleSprite.Update();
+                currentIdleSprite.Draw(destrect);
             }
 
             EndMode2D();
@@ -158,18 +160,6 @@ int main()
 
         EndDrawing();
     }
-
-    // Unload textures when done
-    UnloadTexture(idleTextureN);
-    UnloadTexture(idleTextureS);
-    UnloadTexture(idleTextureE);
-    UnloadTexture(idleTextureW);
-    UnloadTexture(walkTextureN);
-    UnloadTexture(walkTextureS);
-    UnloadTexture(walkTextureE);
-    UnloadTexture(walkTextureW);
-    UnloadTexture(mapTexture);
-
     CloseWindow();
 
     return 0;
