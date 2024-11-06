@@ -14,6 +14,7 @@ Button::Button(const char *imagePath, Vector2 imagePosition, float scale)
     UnloadImage(image);
     position = imagePosition;
     swipe = LoadSound("sounds/button_swipe.mp3");
+    SetSoundVolume(swipe, 3.0f);
 }
 
 Button::~Button()
